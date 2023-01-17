@@ -81,8 +81,46 @@ class SpringsecurityJwtApplicationTests {
 
 		Assertions.assertThat(authentication).isNotEmpty();
 	}
-
 	/**
 	 * POST /member/login 의 응답 헤더에는 Authentication 값이 있어야 합니다.
 	 */
+
+	@Test
+	@DisplayName("POST /member/login 으로 올바르지 않은 username과 password 데이터를 넘기면 400")
+	void t3() throws Exception {
+		// When
+		ResultActions resultActions = mvc
+				.perform(
+						post("/member/login")
+								.content("""
+                                        {
+                                            "username": "",
+                                            "password": "1234"
+                                        }
+                                        """.stripIndent())
+								.contentType(new MediaType(MediaType.APPLICATION_JSON, StandardCharsets.UTF_8))
+				)
+				.andDo(print());
+
+		// Then
+		resultActions
+				.andExpect(status().is4xxClientError());
+
+		mvc
+				.perform(
+						post("/member/login")
+								.content("""
+                                        {
+                                            "username": "user1",
+                                            "password": ""
+                                        }
+                                        """.stripIndent())
+								.contentType(new MediaType(MediaType.APPLICATION_JSON, StandardCharsets.UTF_8))
+				)
+				.andDo(print());
+
+		// Then
+		resultActions
+				.andExpect(status().is4xxClientError());
+	}
 }
