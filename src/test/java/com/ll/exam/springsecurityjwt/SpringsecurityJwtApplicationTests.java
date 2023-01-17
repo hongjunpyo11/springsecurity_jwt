@@ -86,7 +86,7 @@ class SpringsecurityJwtApplicationTests {
 	 */
 
 	@Test
-	@DisplayName("POST /member/login 으로 올바르지 않은 username과 password 데이터를 넘기면 400")
+	@DisplayName("POST /member/login 호출할 때 username 이나 password 를 누락하면 400")
 	void t3() throws Exception {
 		// When
 		ResultActions resultActions = mvc
@@ -106,13 +106,52 @@ class SpringsecurityJwtApplicationTests {
 		resultActions
 				.andExpect(status().is4xxClientError());
 
-		mvc
+		resultActions = mvc
 				.perform(
 						post("/member/login")
 								.content("""
                                         {
                                             "username": "user1",
                                             "password": ""
+                                        }
+                                        """.stripIndent())
+								.contentType(new MediaType(MediaType.APPLICATION_JSON, StandardCharsets.UTF_8))
+				)
+				.andDo(print());
+
+		// Then
+		resultActions
+				.andExpect(status().is4xxClientError());
+	}
+
+	@Test
+	@DisplayName("POST /member/login 호출할 때 올바르지 않는 username 이나 password 를 입력하면 400")
+	void t4() throws Exception {
+		// When
+		ResultActions resultActions = mvc
+				.perform(
+						post("/member/login")
+								.content("""
+                                        {
+                                            "username": "user3",
+                                            "password": "1234"
+                                        }
+                                        """.stripIndent())
+								.contentType(new MediaType(MediaType.APPLICATION_JSON, StandardCharsets.UTF_8))
+				)
+				.andDo(print());
+
+		// Then
+		resultActions
+				.andExpect(status().is4xxClientError());
+
+		resultActions = mvc
+				.perform(
+						post("/member/login")
+								.content("""
+                                        {
+                                            "username": "user1",
+                                            "password": "12345"
                                         }
                                         """.stripIndent())
 								.contentType(new MediaType(MediaType.APPLICATION_JSON, StandardCharsets.UTF_8))
