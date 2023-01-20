@@ -194,7 +194,7 @@ class SpringsecurityJwtApplicationTests {
 
 		resultActions = mvc
 				.perform(
-						get("/member/ me")
+						get("/member/me")
 								.header("Authorization", "Bearer " + accessToken)
 				)
 				.andDo(print());
@@ -214,7 +214,7 @@ class SpringsecurityJwtApplicationTests {
 				.andExpect(jsonPath("$.fail").value(false));
 
 		// MemberController me 메서드에서는 @AuthenticationPrincipal MemberContext memberContext 를 사용해서 현재 로그인 한 회원의 정보를 얻어야 한다.
-		// 테스트를 성공 시켜라
+
 		// 추가
 		// /member/me 에 응답 본문
         /*
