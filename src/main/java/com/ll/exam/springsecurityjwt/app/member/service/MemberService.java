@@ -16,7 +16,6 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class MemberService {
-
     private final MemberRepository memberRepository;
     private final JwtProvider jwtProvider;
 
@@ -66,7 +65,3 @@ public class MemberService {
         return Member.fromMap(memberMap);
     }
 }
-
-/**
- * 맵과 리스트가 아닌 사용자정의객체를 외부 저장소에 저장하는 것은 좋지 않다. 객체를 맵으로 변경하여 저장
- */

@@ -24,13 +24,10 @@ import java.util.Map;
 @SuperBuilder
 @ToString(callSuper = true)
 public class Member extends BaseEntity {
-
     @Column(unique = true)
     private String username;
-
     @JsonIgnore
     private String password;
-
     private String email;
     @Column(columnDefinition = "TEXT")
     private String accessToken;

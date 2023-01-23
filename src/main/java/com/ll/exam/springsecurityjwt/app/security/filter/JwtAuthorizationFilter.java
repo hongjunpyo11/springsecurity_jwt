@@ -23,7 +23,6 @@ import java.util.Map;
 @Component
 @RequiredArgsConstructor
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
-
     private final JwtProvider jwtProvider;
     private final MemberService memberService;
 
@@ -37,7 +36,6 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             // 1차 체크(정보가 변조되지 않았는지 체크)
             if (jwtProvider.verify(token)) {
                 Map<String, Object> claims = jwtProvider.getClaims(token);
-
                 // 캐시(레디스)를 통해서
                 Member member = memberService.getByUsername__cached((String) claims.get("username"));
 
@@ -66,7 +64,3 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         SecurityContextHolder.setContext(context);
     }
 }
-
-/**
- * 매 요청 전에 JWT 엑세스 토큰으로 부터 DB SELECT 를 이용해서 회원정보를 얻어오는 로직에 캐시 적용
- */
