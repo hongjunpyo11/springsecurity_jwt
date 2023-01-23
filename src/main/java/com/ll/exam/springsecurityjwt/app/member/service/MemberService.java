@@ -51,19 +51,4 @@ public class MemberService {
     public boolean verifyWithWhiteList(Member member, String token) {
         return member.getAccessToken().equals(token);
     }
-
-    @Cacheable("key1")
-    public int getCachedInt() {
-        System.out.println("getCachedInt 호출됨");
-        return 5;
-    }
-
-    @CacheEvict("key1")
-    public void deleteCacheKey1() {
-    }
-
-    @CachePut("key1")
-    public int putCacheKey1() {
-        return 10;
-    }
 }
