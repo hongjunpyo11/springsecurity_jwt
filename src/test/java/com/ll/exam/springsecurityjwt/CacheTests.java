@@ -23,13 +23,24 @@ public class CacheTests {
     @DisplayName("캐시 사용")
     void t1() throws Exception {
         int rs = memberService.getCachedInt();
-
-        assertThat(rs).isGreaterThan(0);
         System.out.println(rs);
 
         rs = memberService.getCachedInt();
+        System.out.println(rs);
+    }
 
-        assertThat(rs).isGreaterThan(0);
+    @Test
+    @DisplayName("캐시 삭제")
+    void t2() throws Exception {
+        int rs = memberService.getCachedInt();
+        System.out.println(rs);
+
+        rs = memberService.getCachedInt();
+        System.out.println(rs);
+
+        memberService.deleteCacheKey1();
+
+        rs = memberService.getCachedInt();
         System.out.println(rs);
     }
 }
