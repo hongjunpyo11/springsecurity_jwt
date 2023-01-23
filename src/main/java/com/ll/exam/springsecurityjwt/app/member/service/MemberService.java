@@ -4,6 +4,7 @@ import com.ll.exam.springsecurityjwt.app.member.entity.Member;
 import com.ll.exam.springsecurityjwt.app.member.repository.MemberRepository;
 import com.ll.exam.springsecurityjwt.app.security.jwt.JwtProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -37,7 +38,7 @@ public class MemberService {
     public String genAccessToken(Member member) {
         String accessToken = member.getAccessToken();
 
-        if (StringUtils.hasLength(accessToken) == false ) {
+        if (StringUtils.hasLength(accessToken) == false) {
             accessToken = jwtProvider.generateAccessToken(member.getAccessTokenClaims(), 60L * 60 * 24 * 365 * 100);
             member.setAccessToken(accessToken);
         }
@@ -47,5 +48,11 @@ public class MemberService {
 
     public boolean verifyWithWhiteList(Member member, String token) {
         return member.getAccessToken().equals(token);
+    }
+
+    @Cacheable("key1")
+    public int getCachedInt() {
+        System.out.println("getCachedInt 호출됨");
+        return 5;
     }
 }
