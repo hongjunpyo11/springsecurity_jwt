@@ -1,5 +1,6 @@
 package com.ll.exam.springsecurityjwt.app.member.service;
 
+import com.ll.exam.springsecurityjwt.app.AppConfig;
 import com.ll.exam.springsecurityjwt.app.member.entity.Member;
 import com.ll.exam.springsecurityjwt.app.member.repository.MemberRepository;
 import com.ll.exam.springsecurityjwt.app.security.jwt.JwtProvider;
@@ -56,6 +57,13 @@ public class MemberService {
         Member member = findByUsername(username).orElse(null);
 
         return member.toMap();
+    }
+
+    public Member getByUsername__cached(String username) {
+        MemberService thisObj = (MemberService) AppConfig.getContext().getBean("memberService");
+        Map<String, Object> memberMap = thisObj.getMemberMapByUsername__cached(username);
+
+        return Member.fromMap(memberMap);
     }
 }
 
